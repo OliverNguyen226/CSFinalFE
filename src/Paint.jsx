@@ -26,12 +26,15 @@ export default function Paint() {
             return
         }
 
+        connection.invoke("AddToGroup", id);
+        
         connection.on("PaintingUpdated", (painting) => {
             setPixels(JSON.parse(painting.pixels));
             setName(painting.name);
         })
 
         return () => {
+            connection.invoke("RemoveFromGroup", id);
             connection.off("PaintingUpdated");
         }
     }, [connection])

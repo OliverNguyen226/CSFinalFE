@@ -9,13 +9,12 @@ export default function Paint() {
     const { connection } = useSignalR("/r/paint");
     const { id } = useParams();
     const navigate = useNavigate();
-    const [name, setName] = useState();
+    const [name, setName] = useState("");
     const [pixels, setPixels] = useState([]);
     const [selectedPixel, setSelectedPixel] = useState([]);
 
     useEffect(() => {
         axios.get(`/api/paintings/${id}`).then(res => {
-            console.log("hello", id);
             setPixels(JSON.parse(res.data.pixels));
             setName(res.data.name);
         })
@@ -27,7 +26,7 @@ export default function Paint() {
         }
 
         connection.invoke("AddToGroup", id);
-        
+
         connection.on("PaintingUpdated", (painting) => {
             setPixels(JSON.parse(painting.pixels));
             setName(painting.name);
@@ -59,6 +58,6 @@ export default function Paint() {
                 })))
             }
         } />
-        <button onClick={() => { axios.put(`/api/paintings/${id}`, { name, pixels: JSON.stringify(pixels) }) }}>Save All Changes</button>
+        <button onClick={() => { axios.put(`/api/paintings/${id}`, { id, name, pixels: JSON.stringify(pixels), userId: 1 }) }}>Save All Changes</button>
     </div>
 }

@@ -5,9 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      "/api": "http://127.0.0.1:5126",
+      "/api": {
+        target: "http://localhost:5126"},
       "/r": {
-        target: "http://127.0.0.1:5126",
+        target: "http://localhost:5126",
         ws: true,
       },
     },
